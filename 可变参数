@@ -1,0 +1,58 @@
+#include<stdarg.h>//可变参数
+void myprintf(const char *ptstr, ...)
+{
+	va_list ap;//char *  起始点
+	va_start(ap, ptstr);//从ap开始读取数据
+	char flag;
+	while (*ptstr)
+	{
+		flag = *ptstr;//取出字符
+		
+		if (*ptstr != '%')
+		{ptstr++;
+			putchar(flag);
+		}
+		else
+		{
+			ptstr++;
+			flag = *ptstr;//取出字符//%d   %s %c %f %%
+			switch (flag)
+			{
+			case 'd':
+			{int data = va_arg(ap, int);//读取下一个参数，int
+			ptstr++;
+			printf("%d", data);//如不用printf，就要将整数转化为字符串再putchar
+			break; }
+			case 's':
+			{char * str = (char *)va_arg(ap, char*);//读取下一个参数，int
+			ptstr++;
+			printf("%s", str);
+			break;
+			}
+			case 'c':
+			{char  ch = (char )va_arg(ap, char);//读取下一个参数，int
+			ptstr++;
+			putchar(ch);
+			break;
+			}
+			case 'f':
+			{double  db = va_arg(ap, double);//读取下一个参数，int
+			ptstr++;
+			printf("%f", db);
+			break;
+			}
+			case '%':
+			{
+			ptstr++;
+			printf("%%");
+			break;
+			}
+			}
+		}
+		
+	}
+}
+void test10()
+{
+	myprintf("abcd%d,%s,%c,%f,%%",30,"dsf32",'a',3.5334);
+}
